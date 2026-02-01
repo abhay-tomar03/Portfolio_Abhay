@@ -4,18 +4,25 @@ import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import Skills from "./components/Skills";
 import Work from "./components/Work";
+import Experience from "./components/Experience";
+import BackToTop from "./components/BackToTop";
+import { ThemeProvider } from "./context/ThemeContext";
 
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <Home />
-      <About />
-      <Skills />
-      <Work />
-      <Contact />
-    </div>
+    <ThemeProvider>
+      <div>
+        <Navbar />
+        <BackToTop />
+        <Home />
+        <About />
+        <Skills />
+        <Experience />
+        <Work />
+        <Contact />
+      </div>
+    </ThemeProvider>
   );
 }
 

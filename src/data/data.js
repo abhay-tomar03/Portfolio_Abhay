@@ -15,6 +15,7 @@ export const data=[
         image:reactCart,
         github:"https://github.com/abhay-tomar03/React-Redux-Cart",
         live:"https://react-redux-cart09.netlify.app/",
+        category: "React",
     },
     {
         id:2,
@@ -22,6 +23,7 @@ export const data=[
         image:Anime,
         github:"https://github.com/abhay-tomar03/Anime_Search_Info",
         live:"https://popular-anime-search.netlify.app/",
+        category: "React",
     },
     {
         id:3,
@@ -29,6 +31,7 @@ export const data=[
         image:WeatherApp,
         github:"https://github.com/abhay-tomar03/Weather-App",
         live:"https://abhay-tomar03.github.io/Weather-App/",
+        category: "JavaScript",
     },
     {
        id:4,
@@ -36,6 +39,7 @@ export const data=[
         image:Connect_4,
         github:"https://github.com/abhay-tomar03/Connect_4_Game_Python",
         live:"",
+        category: "Python",
     },
     {
         id:5,
@@ -43,6 +47,7 @@ export const data=[
         image:Tick_Tack_Toe,
         github:"https://github.com/abhay-tomar03/FLutter-Tic-Tac-Toe-Game",
         live:"",
+        category: "Flutter",
     },
     {
        id:6,
@@ -50,6 +55,7 @@ export const data=[
         image:Github_Api,
         github:"https://github.com/abhay-tomar03/-Pull-Request-GithubApi-App",
         live:"",
+        category: "Flutter",
     },
     {
        id:7,
@@ -57,7 +63,8 @@ export const data=[
         image:Drum_Kit,
         github:"https://github.com/abhay-tomar03/drum-kit-website",
         live:"https://abhay-tomar03.github.io/drum-kit-website/",
+        category: "JavaScript",
     },
-
-
 ]
+
+export const categories = ["All", "React", "JavaScript", "Python", "Flutter"];

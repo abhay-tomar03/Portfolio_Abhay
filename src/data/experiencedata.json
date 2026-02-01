@@ -1,0 +1,44 @@
+{
+  "experiences": [
+    {
+      "id": 1,
+      "title": "SDE (Frontend)",
+      "company": "TCS (Mumbai)",
+      "client": "Client: Stellantis",
+      "duration": "Mar 2024 - Present",
+      "description": [
+        "Developed and maintained React.js user interfaces for an internal enterprise application using Material UI.",
+        "Built reusable and responsive UI components aligned with business requirements.",
+        "Integrated REST APIs developed in Spring Boot to fetch and display data in the frontend.",
+        "Utilized React Query for API data fetching and caching, improving data handling and UI responsiveness.",
+        "Debugged frontend and API integration issues to improve application stability.",
+        "Worked in an Agile development environment following sprint-based delivery."
+      ],
+      "techUsed": ["React.js", "Javascript", "TypeScript", "React-Query", "Jest", "Material UI"]
+    },
+    {
+      "id": 2,
+      "title": "Software Engineer & Instructor (Part-time)",
+      "company": "OGCoder.com",
+      "client": "",
+      "duration": "Feb 2022 - July 2022",
+      "description": [
+        "Development: Collaborated with a small team to develop the frontend of a real estate client application using React.js.",
+        "Conducted React.js training sessions for 20+ students, covering components, hooks, and state management."
+      ],
+      "techUsed": ["React.js", "Javascript", "HTML", "CSS"]
+    },
+    {
+      "id": 3,
+      "title": "Your Experience Title",
+      "company": "Company Name",
+      "client": "",
+      "duration": "Start Date - End Date",
+      "description": [
+        "Add your experience description here.",
+        "You can add multiple bullet points for your achievements and responsibilities."
+      ],
+      "techUsed": ["Technology 1", "Technology 2", "Technology 3"]
+    }
+  ]
+}

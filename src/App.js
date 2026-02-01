@@ -6,8 +6,13 @@ import Skills from "./components/Skills";
 import Work from "./components/Work";
 import Experience from "./components/Experience";
 import BackToTop from "./components/BackToTop";
+import AIChat from "./components/AIChat";
 import { ThemeProvider } from "./context/ThemeContext";
 
+// Set API base URL for AI features
+if (!process.env.REACT_APP_API_BASE) {
+  process.env.REACT_APP_API_BASE = 'http://localhost:5000';
+}
 
 function App() {
   return (
@@ -15,6 +20,7 @@ function App() {
       <div>
         <Navbar />
         <BackToTop />
+        <AIChat />
         <Home />
         <About />
         <Skills />

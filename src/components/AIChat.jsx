@@ -1,22 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
-const AIChat = () => {
+const AIChat = ({ isOpen, setIsOpen, messages, sendMessage, loading, error, inputDisabled }) => {
   const { isDark } = useTheme();
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      role: 'assistant',
-      content: 'Hi! 👋 I\'m Abhay\'s AI assistant. Ask me anything about his projects, skills, or experience!',
-      timestamp: new Date()
-    }
-  ]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
-  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
   // Quick action buttons
   const quickActions = [
@@ -26,66 +14,14 @@ const AIChat = () => {
     { label: '📋 Experience', question: 'Tell me about the current role' }
   ];
 
-  // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const sendMessage = async (text = input) => {
-    if (!text.trim()) return;
-
-    const userMessage = {
-      id: messages.length + 1,
-      role: 'user',
-      content: text,
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+  const handleSend = () => {
+    if (!input.trim()) return;
+    sendMessage(input);
     setInput('');
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await fetch(`${API_BASE}/api/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          conversationHistory: messages
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        const assistantMessage = {
-          id: messages.length + 2,
-          role: 'assistant',
-          content: data.message,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-      } else {
-        setError(data.error || 'Failed to get response');
-      }
-    } catch (err) {
-      console.error('Chat error:', err);
-      setError('Connection error. Is the server running? Try: npm run server');
-      const errorMessage = {
-        id: messages.length + 2,
-        role: 'system',
-        content: `❌ Error: ${err.message}`,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -111,7 +47,7 @@ const AIChat = () => {
         <div
           className={`fixed bottom-6 right-6 z-50 w-96 max-h-[600px] rounded-lg shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ${
             isDark ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-900'
-          } md:w-96 sm:w-full sm:left-1/2 sm:-translate-x-1/2 sm:right-auto sm:bottom-4 sm:rounded-lg sm:max-h-[90vh]`}
+          } md:w-96 sm:w-full sm:right-0 sm:left-auto sm:bottom-4 sm:rounded-lg sm:max-h-[90vh]'}`}
           style={{ maxWidth: '100vw' }}
         >
           {/* Header */}
@@ -144,7 +80,7 @@ const AIChat = () => {
                       : msg.role === 'system'
                       ? `${isDark ? 'bg-red-900 text-red-100' : 'bg-red-100 text-red-900'} rounded-bl-none`
                       : `${isDark ? 'bg-gray-700 text-gray-200' : 'bg-gray-200 text-gray-900'} rounded-bl-none`
-                  }`}
+                  } ${msg.role === 'assistant' ? 'font-mono italic tracking-wide text-blue-400' : ''}`}
                 >
                   {msg.content}
                 </div>
@@ -173,6 +109,7 @@ const AIChat = () => {
               <button
                 onClick={() => sendMessage(messages[messages.length-1]?.content || input)}
                 className='px-2 py-1 rounded bg-rose-500 text-white text-xs hover:bg-rose-600 transition self-start'
+                disabled={inputDisabled}
               >
                 Retry
               </button>
@@ -187,8 +124,8 @@ const AIChat = () => {
                 {quickActions.map((action, idx) => (
                   <button
                     key={idx}
-                    onClick={() => sendMessage(action.question)}
-                    disabled={loading}
+                    onClick={() => { setIsOpen(true); sendMessage(action.question); }}
+                    disabled={inputDisabled}
                     className={`text-xs p-2 rounded transition-all hover:scale-105 disabled:opacity-50 ${
                       isDark
                         ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
@@ -209,9 +146,9 @@ const AIChat = () => {
                 type='text'
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                onKeyPress={e => e.key === 'Enter' && sendMessage()}
+                onKeyPress={e => e.key === 'Enter' && handleSend()}
                 placeholder='Ask me anything...'
-                disabled={loading}
+                disabled={inputDisabled}
                 className={`flex-1 px-3 py-2 rounded text-sm border transition-all disabled:opacity-50 ${
                   isDark
                     ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-rose-500'
@@ -219,8 +156,8 @@ const AIChat = () => {
                 } focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-20 sm:px-2 sm:py-1 sm:text-xs`}
               />
               <button
-                onClick={() => sendMessage()}
-                disabled={loading || !input.trim()}
+                onClick={handleSend}
+                disabled={inputDisabled || !input.trim()}
                 className={`px-3 py-2 rounded text-sm font-semibold transition-all disabled:opacity-50 ${
                   isDark
                     ? 'bg-rose-600 hover:bg-rose-700 text-white'

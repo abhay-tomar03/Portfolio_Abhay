@@ -27,18 +27,6 @@
         "Conducted React.js training sessions for 20+ students, covering components, hooks, and state management."
       ],
       "techUsed": ["React.js", "Javascript", "HTML", "CSS"]
-    },
-    {
-      "id": 3,
-      "title": "Your Experience Title",
-      "company": "Company Name",
-      "client": "",
-      "duration": "Start Date - End Date",
-      "description": [
-        "Add your experience description here.",
-        "You can add multiple bullet points for your achievements and responsibilities."
-      ],
-      "techUsed": ["Technology 1", "Technology 2", "Technology 3"]
     }
   ]
 }

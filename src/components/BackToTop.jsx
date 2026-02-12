@@ -29,20 +29,19 @@ const BackToTop = () => {
   }, []);
 
   return (
-    <div className='fixed bottom-8 right-8 z-40'>
-      {isVisible && (
-        <button
-          onClick={scrollToTop}
-          className={`p-3 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 ${
-            isDark 
-              ? 'bg-pink-600 hover:bg-pink-700 text-white' 
-              : 'bg-pink-500 hover:bg-pink-600 text-white'
-          }`}
-          aria-label="Scroll to top"
-        >
-          <FaArrowUp size={20} />
-        </button>
-      )}
+    <div className='fixed bottom-8 right-8 z-50'>
+      <button
+        onClick={scrollToTop}
+        className={`backtotop-animate ${isVisible ? 'visible' : ''} p-3 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 ${
+          isDark 
+            ? 'bg-pink-600 hover:bg-pink-700 text-white' 
+            : 'bg-pink-500 hover:bg-pink-600 text-white'
+        }`}
+        aria-label="Scroll to top"
+        style={{ transitionDelay: isVisible ? '0s' : '0s' }}
+      >
+        <FaArrowUp size={20} />
+      </button>
     </div>
   );
 };

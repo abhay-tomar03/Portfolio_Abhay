@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 const About = () => {
   const { isDark } = useTheme();
   return (
-    <div name='about' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+    <div name='about' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'} fade-in-up`}> 
       <div className='flex flex-col justify-center items-center w-full h-full'>
         <div className='max-w-[1000px] w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 px-4 sm:px-6 md:px-8'>
           <div className='text-center md:text-right pb-8 slide-in-left'>

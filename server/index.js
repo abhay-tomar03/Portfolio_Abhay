@@ -90,7 +90,7 @@ TONE: Professional, confident, but not arrogant. Highlight achievements and impa
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Server is running', timestamp: new Date().toISOString(), model: 'Groq LLaMA 3.1 70B', provider: 'Groq (FREE)' });
+  res.json({ status: 'Server is running', timestamp: new Date().toISOString(), model: 'Groq LLaMA 3.3 70B Versatile', provider: 'Groq (FREE)' });
 });
 
 
@@ -140,6 +140,63 @@ app.post('/api/chat', async (req, res) => {
       error: 'Failed to generate response. Please try again.',
       details: error.message
     });
+  }
+});
+
+
+// Streaming chat endpoint (SSE)
+app.post('/api/chat/stream', async (req, res) => {
+  try {
+    const { message, conversationHistory = [] } = req.body;
+
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return res.status(400).json({ error: 'Message cannot be empty' });
+    }
+
+    // SSE headers — disable all buffering
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache, no-transform');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+    res.setHeader('Content-Encoding', 'none');
+    res.flushHeaders();
+
+    const chatMessages = [
+      { role: 'system', content: systemPrompt },
+      ...conversationHistory
+        .filter(m => m.role === 'user' || m.role === 'assistant')
+        .slice(-10)
+        .map(m => ({ role: m.role, content: m.content })),
+      { role: 'user', content: message.substring(0, 500) }
+    ];
+
+    const stream = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 300,
+      stream: true,
+      messages: chatMessages
+    });
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        const ok = res.write(`data: ${JSON.stringify({ content })}\n\n`);
+        // If backpressure, wait for drain
+        if (!ok) await new Promise(resolve => res.once('drain', resolve));
+      }
+    }
+
+    res.write('data: [DONE]\n\n');
+    res.end();
+  } catch (error) {
+    console.error('Stream error:', error);
+    if (res.headersSent) {
+      res.write(`data: ${JSON.stringify({ error: 'Stream error occurred' })}\n\n`);
+      res.write('data: [DONE]\n\n');
+      res.end();
+    } else {
+      res.status(500).json({ error: 'Failed to start stream', details: error.message });
+    }
   }
 });
 
@@ -336,6 +393,6 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Portfolio AI Server running on http://localhost:${PORT}`);
   console.log(`📡 API Base: http://localhost:${PORT}/api`);
-  console.log(`⚡ Groq LLaMA 3.1 70B connected (COMPLETELY FREE)`);
+  console.log(`⚡ Groq LLaMA 3.3 70B Versatile connected (FREE)`);
   console.log(`✅ Make sure GROQ_API_KEY is set in .env.local`);
 });

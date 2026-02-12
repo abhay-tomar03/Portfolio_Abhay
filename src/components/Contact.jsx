@@ -16,8 +16,7 @@ const Contact = () => {
 
   // Initialize EmailJS
   useEffect(() => {
-    // Your actual Public Key from EmailJS
-    emailjs.init('HXZguoigL54BOUAAv');
+    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
   }, []);
 
   // Validation rules
@@ -86,8 +85,8 @@ const Contact = () => {
       // Send email using EmailJS
       // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your actual IDs
       await emailjs.send(
-        'service_hmwk7xa',      // Replace with your Service ID from EmailJS
-        'template_portfolio',     // Replace with your Template ID from EmailJS
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         templateParams
       );
 
@@ -119,7 +118,7 @@ const Contact = () => {
   };
 
   return (
-    <div name='contact' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} flex justify-center items-center px-4 sm:px-6 md:px-8`}>
+    <div name='contact' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} flex justify-center items-center px-4 sm:px-6 md:px-8 fade-in-up`}> 
         <form onSubmit={handleSubmit} className='flex flex-col max-w-[600px] w-full fade-in-up'>
             <div className='pb-8'>
                 <p className={`text-2xl sm:text-3xl md:text-4xl font-bold inline border-b-4 border-rose-400 ${isDark ? 'text-[#ccd6f6]' : 'text-gray-900'}`}>Contact</p>
@@ -142,6 +141,7 @@ const Contact = () => {
 
             {/* Name Field */}
             <div className='mb-4'>
+              <label htmlFor='name' className={`block text-sm font-semibold mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Name</label>
               <input 
                 className={`w-full p-3 rounded border-2 transition ${
                   errors.name 
@@ -151,11 +151,11 @@ const Contact = () => {
                     : 'bg-white border-gray-300 text-gray-700 focus:border-rose-400 focus:ring-1 focus:ring-rose-100'
                 } focus:outline-none`}
                 type="text" 
-                placeholder='Name' 
+                placeholder='Your name' 
                 name='name'
+                id='name'
                 value={formData.name}
                 onChange={handleChange}
-                aria-label="Your name"
                 aria-describedby={errors.name ? 'name-error' : undefined}
               />
               {errors.name && (
@@ -165,6 +165,7 @@ const Contact = () => {
 
             {/* Email Field */}
             <div className='mb-4'>
+              <label htmlFor='email' className={`block text-sm font-semibold mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Email</label>
               <input 
                 className={`w-full p-3 rounded border-2 transition ${
                   errors.email 
@@ -174,11 +175,11 @@ const Contact = () => {
                     : 'bg-white border-gray-300 text-gray-700 focus:border-rose-400 focus:ring-1 focus:ring-rose-100'
                 } focus:outline-none`}
                 type="email" 
-                placeholder='Email' 
+                placeholder='your@email.com' 
                 name='email'
+                id='email'
                 value={formData.email}
                 onChange={handleChange}
-                aria-label="Your email"
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && (
@@ -188,6 +189,7 @@ const Contact = () => {
 
             {/* Message Field */}
             <div className='mb-4'>
+              <label htmlFor='message' className={`block text-sm font-semibold mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Message</label>
               <textarea 
                 className={`w-full p-3 rounded border-2 transition resize-none ${
                   errors.message 
@@ -197,11 +199,11 @@ const Contact = () => {
                     : 'bg-white border-gray-300 text-gray-700 focus:border-rose-400 focus:ring-1 focus:ring-rose-100'
                 } focus:outline-none`}
                 name="message" 
+                id="message"
                 rows="10" 
-                placeholder='Message'
+                placeholder='Write your message here...'
                 value={formData.message}
                 onChange={handleChange}
-                aria-label="Your message"
                 aria-describedby={errors.message ? 'message-error' : undefined}
               ></textarea>
               {errors.message && (
@@ -213,9 +215,14 @@ const Contact = () => {
             <button 
               type='submit'
               disabled={isLoading}
-              className={`border-2 px-4 py-3 my-4 mx-auto flex items-center rounded transition ${isDark ? 'text-white hover:bg-rose-500 hover:border-rose-500 border-rose-500 bg-rose-500' : 'text-white bg-rose-500 hover:bg-rose-600 hover:border-rose-600 border-rose-500'} disabled:opacity-50 disabled:cursor-not-allowed`}
+              className={`enhanced-btn border-2 px-4 py-3 my-4 mx-auto flex items-center rounded ${isDark ? 'text-white hover:bg-rose-500 hover:border-rose-500 border-rose-500 bg-rose-500' : 'text-white bg-rose-500 hover:bg-rose-600 hover:border-rose-600 border-rose-500'} disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              {isLoading ? 'Sending...' : "Let's Collaborate"}
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  Sending...
+                </span>
+              ) : "Let's Collaborate"}
             </button>
         </form>
     </div>

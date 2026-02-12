@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import Notification from "./Notification";
 import {
@@ -34,12 +33,13 @@ const Navbar = () => {
         <img
           src={Logo}
           alt="Portfolio Logo"
-          style={{ width: "120px", mdWidth: "150px", marginTop: "8px" }}
+          className="w-[120px] md:w-[150px] mt-2"
+          loading="lazy"
         />
       </div>
 
       {/* menu */}
-      <ul className="hidden md:flex text-sm lg:text-base" role="navigation">
+      <ul className="hidden md:flex text-sm lg:text-base" role="menubar">
         <li>
           <Link to="home" smooth={true} duration={500} role="menuitem">
             Home
@@ -91,7 +91,7 @@ const Navbar = () => {
         <a
           href="/resume.pdf"
           download
-          className={`px-3 py-2 rounded-lg font-semibold text-xs lg:text-sm transition-colors duration-300 shadow border-2 ${isDark ? "bg-rose-500 text-white border-rose-500 hover:bg-rose-600 hover:scale-105" : "bg-white text-rose-500 border-rose-500 hover:bg-rose-100 hover:scale-105"}`}
+          className={`enhanced-btn px-3 py-2 rounded-lg font-semibold text-xs lg:text-sm transition-colors duration-300 shadow border-2 ${isDark ? "bg-rose-500 text-white border-rose-500 hover:bg-rose-600" : "bg-white text-rose-500 border-rose-500 hover:bg-rose-100"}`}
           style={{ textDecoration: "none" }}
           aria-label="Download Resume PDF"
           onClick={(e) => {
@@ -176,12 +176,50 @@ const Navbar = () => {
             Contact
           </Link>
         </li>
+        {/* Social icons in mobile menu */}
+        <li className="py-4">
+          <div className="flex gap-6 items-center justify-center">
+            <a
+              href="https://www.linkedin.com/in/abhay-tomar"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="text-blue-500 hover:text-blue-400 transition-colors"
+            >
+              <FaLinkedin size={30} />
+            </a>
+            <a
+              href="https://github.com/abhay-tomar03"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className={`${isDark ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'} transition-colors`}
+            >
+              <FaGithub size={30} />
+            </a>
+            <a
+              href="mailto:abhay.tomar5670@gmail.com"
+              aria-label="Email"
+              className="text-green-500 hover:text-green-400 transition-colors"
+            >
+              <HiOutlineMail size={30} />
+            </a>
+            <a
+              href="/resume.pdf"
+              download
+              aria-label="Download Resume"
+              className={`${isDark ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'} transition-colors`}
+            >
+              <BsFillPersonLinesFill size={30} />
+            </a>
+          </div>
+        </li>
       </ul>
 
       {/* Social icons */}
       <div className="hidden lg:flex fixed flex-col top-[35%] left-0">
         <ul role="navigation" aria-label="Social media links">
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-blue-600">
+          <li className="social-float w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-blue-600">
             <a
               className="flex justify-between items-center w-full text-gray-300 hover:text-white transition"
               href="https://www.linkedin.com/in/abhay-tomar"
@@ -192,7 +230,7 @@ const Navbar = () => {
               Linkedin <FaLinkedin size={30} />
             </a>
           </li>
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#333333]">
+          <li className="social-float w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#333333]">
             <a
               className="flex justify-between items-center w-full text-gray-300 hover:text-white transition"
               href="https://github.com/abhay-tomar03"
@@ -203,7 +241,7 @@ const Navbar = () => {
               Github <FaGithub size={30} />
             </a>
           </li>
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#6fc2b0]">
+          <li className="social-float w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#6fc2b0]">
             <a
               className="flex justify-between items-center w-full text-gray-300 hover:text-white transition"
               href="mailto:abhay.tomar5670@gmail.com"
@@ -212,7 +250,7 @@ const Navbar = () => {
               Email <HiOutlineMail size={30} />
             </a>
           </li>
-          <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#565f69]">
+          <li className="social-float w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#565f69]">
             <a
               className="flex justify-between items-center w-full text-gray-300 hover:text-white transition"
               href="https://bit.ly/3LJERs3"

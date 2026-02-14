@@ -12,15 +12,17 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(helmet());
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:3001',
+  process.env.FRONTEND_URL // production frontend URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:5000',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001',
-    'http://127.0.0.1:5000'
-  ],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(express.json({ limit: '10kb' }));

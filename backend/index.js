@@ -8,6 +8,8 @@ import Groq from 'groq-sdk';
 dotenv.config({ path: '.env.local' });
 
 const app = express();
+// Trust first proxy (needed for rate limiting behind Render)
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
 // Middleware

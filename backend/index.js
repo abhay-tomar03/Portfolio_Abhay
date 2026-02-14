@@ -20,6 +20,7 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
+  'https://portfolio-abhay-react-app.vercel.app', // deployed frontend
   process.env.FRONTEND_URL // production frontend URL
 ].filter(Boolean);
 

@@ -13,7 +13,7 @@ const Experience = () => {
   };
 
   return (
-    <div name='experience' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+    <div name='experience' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'} fade-in-up`}> 
       <div className='max-w-[1000px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col justify-center w-full h-full'>
         {/* Section Title */}
         <div className='pb-12 fade-in-up'>
@@ -33,8 +33,11 @@ const Experience = () => {
               } transition-all duration-300 hover:pl-8 md:hover:pl-10 cursor-pointer`}
               style={{ animationDelay: `${index * 0.2}s` }}
               onClick={() => toggleExpand(exp.id)}
-              role='article'
-              aria-label={`Experience: ${exp.title}`}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpand(exp.id); } }}
+              role='button'
+              tabIndex={0}
+              aria-expanded={expandedId === exp.id}
+              aria-label={`Experience: ${exp.title}. ${expandedId === exp.id ? 'Click to collapse' : 'Click to expand'}`}
             >
               {/* Timeline dot */}
               <div className={`absolute -left-3.5 md:-left-4 top-2 w-6 h-6 md:w-7 md:h-7 rounded-full transition-all duration-300 ${
@@ -86,7 +89,7 @@ const Experience = () => {
                   </ul>
 
                   {/* Tech Used */}
-                  <div className='mt-4 pt-4 border-t border-gray-700'>
+                  <div className={`mt-4 pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                     <p className={`text-xs font-semibold mb-2 ${isDark ? 'text-rose-400' : 'text-rose-500'}`}>
                       TECH USED –
                     </p>

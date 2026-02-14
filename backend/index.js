@@ -8,6 +8,8 @@ import Groq from 'groq-sdk';
 dotenv.config({ path: '.env.local' });
 
 const app = express();
+// Trust first proxy (needed for rate limiting behind Render)
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -18,6 +20,7 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
+  'https://portfolio-abhay-react-app.vercel.app', // deployed frontend
   process.env.FRONTEND_URL // production frontend URL
 ].filter(Boolean);
 

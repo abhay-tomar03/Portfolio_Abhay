@@ -15,23 +15,42 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(helmet());
 
-const allowedOrigins = [
+// Configure allowed frontends and CORS behavior
+const rawAllowed = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
-  'https://portfolio-abhay-react-app.vercel.app', // deployed frontend
-  process.env.FRONTEND_URL // production frontend URL
+  'https://portfolio-abhay-react-app.vercel.app', // deployed frontend (example)
+  process.env.FRONTEND_URL // production frontend URL (set this in the host's env)
 ].filter(Boolean);
+
+// Normalize origins (strip trailing slash) for reliable comparisons
+const allowedOrigins = rawAllowed.map(o => o.replace(/\/$/, ''));
+const isAllowAll = process.env.ALLOW_ALL_ORIGINS === 'true';
+
+// Simple request-origin logger to help debug CORS issues in prod
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) console.log('Incoming request origin:', origin);
+  next();
+});
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (isAllowAll) return callback(null, true);
+
+    const normalized = origin.replace(/\/$/, '');
+    if (allowedOrigins.indexOf(normalized) !== -1) {
       return callback(null, true);
     }
-    return callback(new Error('Not allowed by CORS'), false);
+
+    // Helpful error message for logs — browser will still block the request
+    const msg = `CORS policy: This origin is not allowed — ${origin}`;
+    console.warn(msg);
+    return callback(new Error(msg), false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

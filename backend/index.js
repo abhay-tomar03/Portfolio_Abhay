@@ -21,7 +21,8 @@ const rawAllowed = [
   'http://localhost:3001',
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
-  'https://portfolio-abhay-react-app.vercel.app', // deployed frontend (example)
+  'https://portfolio-abhay-react-app.vercel.app', // old deployed frontend (example)
+  'https://portfolio-abhay-frotend.onrender.com', // new deployed frontend (fix typo if needed)
   process.env.FRONTEND_URL // production frontend URL (set this in the host's env)
 ].filter(Boolean);
 
@@ -431,4 +432,5 @@ app.listen(PORT, () => {
   console.log(`📡 API Base: http://localhost:${PORT}/api`);
   console.log(`⚡ Groq LLaMA 3.3 70B Versatile connected (FREE)`);
   console.log(`✅ Make sure GROQ_API_KEY is set in .env.local`);
+  console.log("Server is live at port 5000. Ready to handle chat requests!");
 });

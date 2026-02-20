@@ -20,8 +20,8 @@ RUN cd frontend && npm run build
 # Copy backend source
 COPY backend/ ./backend/
 
-# Expose port (Railway will set PORT env var)
+# Expose port (Render will set PORT env var)
 EXPOSE 5000
 
-# Start the backend server
-CMD ["npm", "run", "start:backend"]
+# Start the backend server directly for Render
+CMD ["node", "backend/index.js"]

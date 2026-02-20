@@ -22,7 +22,7 @@ const rawAllowed = [
   'http://127.0.0.1:3000',
   'http://127.0.0.1:3001',
   'https://portfolio-abhay-react-app.vercel.app', // old deployed frontend (example)
-  'https://portfolio-abhay-frotend.onrender.com', // new deployed frontend (fix typo if needed)
+  'https://portfolio-abhay-frontend.onrender.com',
   process.env.FRONTEND_URL // production frontend URL (set this in the host's env)
 ].filter(Boolean);
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import useScrollAnimation from '../hooks/useScrollAnimation';
 import data from '../data/experiencedata.json';
 
 const { experiences } = data;
@@ -7,13 +8,14 @@ const { experiences } = data;
 const Experience = () => {
   const { isDark } = useTheme();
   const [expandedId, setExpandedId] = useState(null);
+  const [ref] = useScrollAnimation({ threshold: 0.2 });
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
   return (
-    <div name='experience' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'} fade-in-up`}> 
+    <div ref={ref} name='experience' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'} fade-in-up`}> 
       <div className='max-w-[1000px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col justify-center w-full h-full'>
         {/* Section Title */}
         <div className='pb-12 fade-in-up'>

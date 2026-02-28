@@ -123,7 +123,20 @@ const Work = ({ sendMessage, setChatOpen }) => {
                     >
                       {item.name}
                     </span>
-                    <div className="pt-8 text-center ">
+                    {/* Tech Stack Preview */}
+                    {item.techStack && (
+                      <div className="px-2 py-1 mb-2 mx-auto text-center">
+                        <p className="text-xs font-semibold text-gray-300 mb-1">Tech Stack:</p>
+                        <div className="flex flex-wrap justify-center gap-1">
+                          {item.techStack.map((tech, idx) => (
+                            <span key={idx} className="text-xs bg-rose-500 text-white px-2 py-0.5 rounded-full">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="pt-4 text-center ">
                       <div className="flex flex-row flex-wrap justify-center gap-2 mt-2">
                         <a href={item.github} target="_blank" rel="noopener noreferrer" aria-label={`View code for ${item.name}`}> 
                           <button

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance: Optimize images rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
 /* Fadein animation for chat messages */
 @keyframes fadein {
     from { opacity: 0; transform: translateY(10px); }

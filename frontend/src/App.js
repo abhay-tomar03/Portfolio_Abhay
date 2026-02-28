@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { flushSync } from "react-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Home from "./components/Home";
@@ -9,6 +11,7 @@ import Work from "./components/Work";
 import Experience from "./components/Experience";
 import BackToTop from "./components/BackToTop";
 import AIChat from "./components/AIChat";
+import Footer from "./components/Footer";
 import { ThemeProvider } from "./context/ThemeContext";
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
@@ -183,6 +186,18 @@ function App() {
   return (
     <ThemeProvider>
       <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <Navbar />
         <BackToTop />
         <AIChat
@@ -206,6 +221,7 @@ function App() {
           setChatOpen={setIsOpen}
         />
         <Contact />
+        <Footer />
       </div>
     </ThemeProvider>
   );

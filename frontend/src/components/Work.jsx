@@ -6,6 +6,7 @@ import AIActionsDropdown from "./AIActionsDropdown.jsx";
 const Work = ({ sendMessage, setChatOpen }) => {
   const { isDark } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState(0);
 
@@ -30,7 +31,15 @@ const Work = ({ sendMessage, setChatOpen }) => {
     };
   }, [lightboxOpen, handleLightboxKey]);
   const project = data;
-  const filteredProjects = selectedCategory === "All" ? project : project.filter(item => item.category === selectedCategory);
+  const filteredProjects = selectedCategory === "All" 
+    ? project 
+    : project.filter(item => item.category === selectedCategory);
+  
+  // Apply search filter on top of category filter
+  const searchedProjects = filteredProjects.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div name='work' className={`w-full min-h-screen py-20 ${isDark ? 'text-gray-300' : 'text-gray-700'} ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} fade-in-up`}> 
@@ -61,28 +70,59 @@ const Work = ({ sendMessage, setChatOpen }) => {
             </button>
           ))}
         </div>
+        {/* Search Input */}
+        <div className='mb-8 fade-in-up'>
+          <input
+            type='text'
+            placeholder='Search projects by name or description...'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
+              isDark
+                ? 'bg-gray-700 border-gray-600 text-gray-300 placeholder-gray-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500 focus:ring-opacity-20'
+                : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500 focus:ring-opacity-20'
+            }`}
+            aria-label='Search projects'
+          />
+        </div>
         {/* container for projects */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 fade-in">
-          {filteredProjects.length > 0 ? (
+          {searchedProjects.length > 0 ? (
             <>
-              {filteredProjects.map((item, index) => (
+              {searchedProjects.map((item, index) => (
                 <div
                   key={index}
                   style={{ backgroundImage: `url(${item.image})`, cursor: 'pointer' }}
-                  className="enhanced-card group container rounded-md flex justify-center text-center items-center mx-auto content-div overflow-visible"
+                  className="enhanced-card group container rounded-md flex justify-center text-center items-center mx-auto content-div overflow-visible relative"
                   role="article"
                   aria-label={`Project: ${item.name}`}
                   onClick={e => {
                     // Only open lightbox if clicking on the image background, not on a button
                     if (e.target === e.currentTarget) {
                       setLightboxOpen(true);
-                      setLightboxIdx(index);
+                      setLightboxIdx(data.indexOf(item));
                     }
                   }}
                 >
+                  {/* Featured Badge */}
+                  {item.featured && (
+                    <div className='absolute top-2 right-2 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 z-10 animate-pulse'>
+                      ⭐ Featured
+                    </div>
+                  )}
                   {/* Hover effect for images — always visible on touch/mobile */}
                   <div className="sm:opacity-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="text-2xl font-bold text-white tracking-wider">{item.name}</span>
+                    <span
+                      className="block px-2 py-1 bg-black bg-opacity-60 rounded-md mb-2 mx-auto max-w-[90%] text-lg sm:text-xl md:text-2xl font-extrabold text-white tracking-tight shadow-lg backdrop-blur-sm"
+                      style={{
+                        textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 1px 0 #fff',
+                        letterSpacing: '0.01em',
+                        lineHeight: 1.2,
+                        wordBreak: 'break-word',
+                      }}
+                    >
+                      {item.name}
+                    </span>
                     <div className="pt-8 text-center ">
                       <div className="flex flex-row flex-wrap justify-center gap-2 mt-2">
                         <a href={item.github} target="_blank" rel="noopener noreferrer" aria-label={`View code for ${item.name}`}> 
@@ -132,8 +172,8 @@ const Work = ({ sendMessage, setChatOpen }) => {
                       ×
                     </button>
                     <img
-                      src={filteredProjects[lightboxIdx]?.image}
-                      alt={filteredProjects[lightboxIdx]?.name}
+                      src={data[lightboxIdx]?.image}
+                      alt={data[lightboxIdx]?.name}
                       className="rounded-lg max-h-[70vh] w-auto object-contain shadow-2xl transition-transform duration-300 hover:scale-105"
                       style={{ background: '#fff' }}
                       loading="lazy"
@@ -141,17 +181,17 @@ const Work = ({ sendMessage, setChatOpen }) => {
                     <div className="flex justify-between w-full mt-4">
                       <button
                         className="px-4 py-2 text-white bg-rose-500 rounded hover:bg-rose-600 disabled:opacity-40"
-                        onClick={() => setLightboxIdx(idx => (idx > 0 ? idx - 1 : filteredProjects.length - 1))}
-                        disabled={filteredProjects.length <= 1}
+                        onClick={() => setLightboxIdx(idx => (idx > 0 ? idx - 1 : data.length - 1))}
+                        disabled={data.length <= 1}
                         aria-label="Previous image"
                       >
                         ◀
                       </button>
-                      <span className="text-white text-sm font-semibold">{filteredProjects[lightboxIdx].name}</span>
+                      <span className="text-white text-sm font-semibold">{data[lightboxIdx].name}</span>
                       <button
                         className="px-4 py-2 text-white bg-rose-500 rounded hover:bg-rose-600 disabled:opacity-40"
-                        onClick={() => setLightboxIdx(idx => (idx < filteredProjects.length - 1 ? idx + 1 : 0))}
-                        disabled={filteredProjects.length <= 1}
+                        onClick={() => setLightboxIdx(idx => (idx < data.length - 1 ? idx + 1 : 0))}
+                        disabled={data.length <= 1}
                         aria-label="Next image"
                       >
                         ▶
@@ -163,7 +203,7 @@ const Work = ({ sendMessage, setChatOpen }) => {
             </>
           ) : (
             <div className={`col-span-full text-center py-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              <p>No projects found in this category</p>
+              <p>No projects found matching "{searchQuery}" {selectedCategory !== "All" && `in ${selectedCategory}`}</p>
             </div>
           )}
         </div>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { FaUserCircle, FaRobot } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 import ReactMarkdown from 'react-markdown';
@@ -39,10 +40,28 @@ const AIChat = ({ isOpen, setIsOpen, messages, sendMessage, loading, streaming, 
     return () => clearInterval(interval);
     // eslint-disable-next-line
   }, [showTypedWelcome]);
+
+  // Show error as toast notification
+  useEffect(() => {
+    if (error) {
+      toast.error(`⚠️ ${error}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  }, [error]);
   // const [minimized, setMinimized] = useState(false);
   const messagesEndRef = useRef(null);
   const quickActions = [
-    { label: '🚀 Best Project', question: 'What is my best project and why?' },
+    {
+      label: '🚀 Best Project',
+      question: 'What is my best project and why?',
+      answer: `My best project is SneakHub - E-Commerce Platform.\n\nSneakHub is a modern e-commerce platform for premium sneakers, offering a curated selection from top brands. It features a product catalog with discounts and ratings, cart, wishlist, user authentication, fast shipping, secure checkout, and easy returns.\n\n- Visual search for sneakers\n- add reviews\n\nTech Stack: Next.js, React.js, Tailwind CSS, Razorpay API, Node.js.`
+    },
     { label: '💪 Core Skills', question: 'What are my strongest skills?' },
     { label: '🏯 Why Hire Me', question: 'Why should you hire Abhay?' },
     { label: '📋 Experience', question: 'Tell me about the current role' }
@@ -122,7 +141,14 @@ const AIChat = ({ isOpen, setIsOpen, messages, sendMessage, loading, streaming, 
             </div>
             <div className='flex items-center gap-2'>
               <button
-                onClick={clearChat}
+                onClick={() => {
+                  clearChat();
+                  toast.info('Chat history cleared', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                  });
+                }}
                 className={`px-2 py-1 rounded text-xs font-semibold ${isDark ? 'bg-gray-700 text-blue-300 hover:bg-gray-600' : 'bg-gray-200 text-blue-700 hover:bg-gray-300'} transition`}
                 aria-label="Clear chat history"
               >
@@ -194,6 +220,11 @@ const AIChat = ({ isOpen, setIsOpen, messages, sendMessage, loading, streaming, 
                           onClick={() => {
                             navigator.clipboard.writeText(msg.content);
                             setCopiedId(msg.id);
+                            toast.success('✓ Copied to clipboard!', {
+                              position: 'top-right',
+                              autoClose: 2000,
+                              hideProgressBar: false,
+                            });
                             setTimeout(() => setCopiedId(null), 2000);
                           }}
                         >
@@ -228,22 +259,25 @@ const AIChat = ({ isOpen, setIsOpen, messages, sendMessage, loading, streaming, 
             )}
             <div ref={messagesEndRef} />
           </div>
-          {/* Error Display */}
+          {/* Error Display - Retry Button */}
           {error && (
-            <div className='p-3 bg-red-100 text-red-800 text-xs border-t border-red-300 flex flex-col gap-2'>
-              <div>
-                <p className='font-semibold'>⚠️ Error:</p>
-                <p>{error}</p>
-              </div>
+            <div className='p-2 text-center border-t border-red-300'>
               <button
                 onClick={() => {
                   const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
-                  if (lastUserMsg) sendMessage(lastUserMsg.content);
+                  if (lastUserMsg) {
+                    sendMessage(lastUserMsg.content);
+                    toast.info('Retrying...', {
+                      position: 'top-right',
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                    });
+                  }
                 }}
-                className='px-2 py-1 rounded bg-rose-500 text-white text-xs hover:bg-rose-600 transition self-start'
+                className='px-3 py-1 rounded bg-rose-500 text-white text-xs hover:bg-rose-600 transition font-semibold'
                 disabled={inputDisabled}
               >
-                Retry
+                🔄 Retry
               </button>
             </div>
           )}

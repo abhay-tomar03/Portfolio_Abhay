@@ -90,8 +90,8 @@ const Navbar = () => {
           </button>
         </div>
         <a
-          href="/resume.pdf"
-          download
+          href="/Abhay_SDE_Frontend.pdf"
+          download="Abhay_SDE_Frontend.pdf"
           className={`enhanced-btn px-3 py-2 rounded-lg font-semibold text-xs lg:text-sm transition-colors duration-300 shadow border-2 ${isDark ? "bg-rose-500 text-white border-rose-500 hover:bg-rose-600" : "bg-white text-rose-500 border-rose-500 hover:bg-rose-100"}`}
           style={{ textDecoration: "none" }}
           aria-label="Download Resume PDF"
@@ -203,8 +203,8 @@ const Navbar = () => {
               <HiOutlineMail size={30} />
             </a>
             <a
-              href="/resume.pdf"
-              download
+              href="/Abhay_SDE_Frontend.pdf"
+              download="Abhay_SDE_Frontend.pdf"
               aria-label="Download Resume"
               className={`${isDark ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'} transition-colors`}
             >
@@ -251,8 +251,8 @@ const Navbar = () => {
           <li className="social-float w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-[#565f69]">
             <a
               className="flex justify-between items-center w-full text-gray-300 hover:text-white transition"
-              href="https://bit.ly/3LJERs3"
-              target="_blank"
+              href="/Abhay_SDE_Frontend.pdf"
+              download="Abhay_SDE_Frontend.pdf"
               rel="noopener noreferrer"
               aria-label="Download resume"
             >

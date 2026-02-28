@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { flushSync } from "react-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Home from "./components/Home";
@@ -9,12 +11,29 @@ import Work from "./components/Work";
 import Experience from "./components/Experience";
 import BackToTop from "./components/BackToTop";
 import AIChat from "./components/AIChat";
+import Footer from "./components/Footer";
 import { ThemeProvider } from "./context/ThemeContext";
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
 // const API_BASE = 'https://portfolio-abhay-backend.onrender.com';
 
+// Environment validation
+const validateEnvironment = () => {
+  const issues = [];
+  
+  if (!process.env.REACT_APP_EMAILJS_PUBLIC_KEY) {
+    issues.push('Missing REACT_APP_EMAILJS_PUBLIC_KEY');
+  }
+  if (!process.env.REACT_APP_EMAILJS_SERVICE_ID) {
+    issues.push('Missing REACT_APP_EMAILJS_SERVICE_ID');
+  }
+  if (!process.env.REACT_APP_EMAILJS_TEMPLATE_ID) {
+    issues.push('Missing REACT_APP_EMAILJS_TEMPLATE_ID');
+  }
+  
+  return issues;
+};
 
 const INITIAL_MESSAGE = {
   id: 1,
@@ -24,6 +43,17 @@ const INITIAL_MESSAGE = {
 };
 
 function App() {
+  // Validate environment on mount
+  useEffect(() => {
+    const issues = validateEnvironment();
+    if (issues.length > 0 && process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Environment Configuration Issues:', issues);
+      toast.warning('Some features may not work. Check console for details.', {
+        position: 'top-center',
+        autoClose: 5000,
+      });
+    }
+  }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState(() => {
     try {
@@ -183,6 +213,18 @@ function App() {
   return (
     <ThemeProvider>
       <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <Navbar />
         <BackToTop />
         <AIChat
@@ -206,6 +248,7 @@ function App() {
           setChatOpen={setIsOpen}
         />
         <Contact />
+        <Footer />
       </div>
     </ThemeProvider>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify';
 import { useTheme } from '../context/ThemeContext';
 import emailjs from 'emailjs-com';
 
@@ -66,6 +67,10 @@ const Contact = () => {
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      toast.error('Please fix the errors in the form', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -90,11 +95,19 @@ const Contact = () => {
         templateParams
       );
 
-      setSubmitted(true);
+      toast.success('✓ Message sent successfully! I\'ll get back to you soon.', {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      
       setFormData({ name: '', email: '', message: '' });
       setErrors({});
-      // Hide success message after 5 seconds
-      setTimeout(() => setSubmitted(false), 5000);
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 2000);
     } catch (error) {
       console.error('Email send error:', error);
       
@@ -110,6 +123,15 @@ const Contact = () => {
       } else if (error.message) {
         errorMessage = `Error: ${error.message}`;
       }
+      
+      toast.error(errorMessage, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       
       setErrors({ submit: errorMessage });
     } finally {

@@ -60,7 +60,8 @@ app.use(cors({
 
 // Handle preflight requests
 app.options('*', cors());
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: '50kb' }));
+app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -98,6 +99,7 @@ const portfolioData = {
     }
   ],
   projects: [
+    'SneakHub - E-Commerce Platform',
     'React JS Cart (Redux)',
     'Popular Anime ReactJs Application',
     'Weather App (JavaScript)',
@@ -119,6 +121,16 @@ IMPORTANT RULES:
 5. NEVER make up projects, skills, or experience not listed
 6. Be honest about what you DO know and what you DON'T
 7. Always use third person perspective (e.g., "Abhay Tomar has..." or "He is skilled at...")
+
+FEATURED PROJECT - SneakHub:
+SneakHub is Abhay Tomar's flagship and best project. It is a comprehensive, full-stack e-commerce platform for sneaker enthusiasts. Key highlights:
+- Modern tech stack: Next.js, React.js, Tailwind CSS, Node.js backend
+- Payments: Razorpay API (not Stripe)
+- Advanced AI features: personalized recommendations, AI chatbot support, visual search, dynamic pricing, sentiment analysis
+- Full e-commerce functionality: product catalog, cart, wishlist, authentication, checkout, shipping, returns
+- Live: https://sneaker-store-frontend-navy.vercel.app/
+- GitHub: https://github.com/abhay-tomar03/Sneaker-Store
+When asked about the "best project" or "favorite project", ALWAYS mention SneakHub as the answer. Explain that it showcases both technical depth (full-stack development, AI integration) and user-centric innovation (excellent UX, secure payments, modern design).
 
 PORTFOLIO DATA:
 ${JSON.stringify(portfolioData, null, 2)}

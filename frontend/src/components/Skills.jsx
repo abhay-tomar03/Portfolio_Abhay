@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
+import useScrollAnimation from '../hooks/useScrollAnimation';
+import useCounterAnimation from '../hooks/useCounterAnimation';
 
 import HTML from '../assets/html.png';
 import CSS from '../assets/css.png';
@@ -31,13 +33,16 @@ const skillData = [
 
 const Skills = () => {
     const { isDark } = useTheme();
+    const [ref, isVisible] = useScrollAnimation({ threshold: 0.3 });
+    const skillCount = useCounterAnimation(12, 1500, isVisible);
+    
     return (
-        <div name='skills' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'} fade-in-up`}>
+        <div ref={ref} name='skills' className={`w-full min-h-screen py-20 ${isDark ? 'bg-[#0a192f]' : 'bg-neutral-50'} ${isDark ? 'text-gray-300' : 'text-gray-700'} fade-in-up`}>
             {/* Container */}
             <div className='max-w-[1000px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col justify-center w-full h-full'>
                 <div className='fade-in-up'>
                     <p className={`text-2xl sm:text-3xl md:text-4xl font-bold inline border-b-4 border-rose-400 ${isDark ? 'text-[#ccd6f6]' : 'text-gray-900'}`}>Skills</p>
-                    <p className={`py-4 text-sm sm:text-base ${isDark ? '' : 'text-gray-600'}`}>{/* These are the technologies I've worked with */}</p>
+                    <p className={`py-4 text-sm sm:text-base ${isDark ? '' : 'text-gray-600'}`}>Proficient in {skillCount}+ technologies and frameworks</p>
                 </div>
                 <div className='w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 text-center py-8 fade-in'>
                     {skillData.map((skill, idx) => (

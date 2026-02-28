@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Notification from "./Notification";
 import {
   FaBars,
@@ -94,18 +95,15 @@ const Navbar = () => {
           className={`enhanced-btn px-3 py-2 rounded-lg font-semibold text-xs lg:text-sm transition-colors duration-300 shadow border-2 ${isDark ? "bg-rose-500 text-white border-rose-500 hover:bg-rose-600" : "bg-white text-rose-500 border-rose-500 hover:bg-rose-100"}`}
           style={{ textDecoration: "none" }}
           aria-label="Download Resume PDF"
-          onClick={(e) => {
-            try {
-              setNotification({
-                message: "Resume download started!",
-                type: "success",
-              });
-            } catch (err) {
-              setNotification({
-                message: "Resume download failed. Please try again.",
-                type: "error",
-              });
-            }
+          onClick={() => {
+            toast.success("Resume download started!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
           }}
         >
           Download Resume
